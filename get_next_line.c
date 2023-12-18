@@ -6,12 +6,40 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:12:00 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/16 20:40:58 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:20:33 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+
+t_list *lastnode(t_list *list)
+{
+	while (list != NULL)
+	{
+		if (list -> next == NULL)
+			return (list);
+		list = list -> next;
+	}
+	return (list);
+}
+
+void	addnode(t_list **list, char *buf)
+{
+t_list *newnode;
+t_list *last;
+
+newnode = malloc(sizeof(t_list));
+if (!newnode)
+	return ;
+last = lastnode(list);
+newnode -> str = buf;
+if (last != NULL)
+	last -> next = newnode;
+else
+	*list = newnode;
+newnode -> next = NULL;
+}
 
 int	find_line(t_list *list)
 {
@@ -61,7 +89,7 @@ char	*get_next_line(int fd)
 	make_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
-	nextline = get_nextl(list);
+	nextline = get_next(list);
 	clean_list_(&list);
 	return (nextline);
 }
