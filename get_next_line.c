@@ -6,39 +6,81 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:12:00 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/18 14:20:33 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:06:42 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 
-t_list *lastnode(t_list *list)
+int lenofstring(t_list *list)
+{
+	int len;
+	while (list)
+	{
+		len = 0;
+		while (list -> str[len] && list -> str[len] != '\n')
+		{
+			len++;
+		}
+		list -> next;
+	}
+	return(len);
+}
+
+char	*copystr(t_list *list)
+{
+	char	*full_line;
+	int		strlen;
+	int i;
+	int k;
+	
+	k = 0;
+	strlen = (lenofstring(list));
+	full_line = malloc(strlen +1);
+	if (!full_line)
+		return (NULL);
+	while (list)
+	{
+		i = 0;
+		while (list -> str[i])
+		{
+			if (list -> str[i] =='\n')
+				i++;
+				full_line[k] = '\0';
+			full_line[k++] = list -> str[i++];
+		}
+		list -> next;
+	}
+	return (full_line);
+}
+
+t_list	*lastnode(t_list *list)
 {
 	while (list != NULL)
 	{
 		if (list -> next == NULL)
 			return (list);
-		list = list -> next;
+	list = list -> next;
 	}
 	return (list);
 }
 
 void	addnode(t_list **list, char *buf)
 {
-t_list *newnode;
-t_list *last;
+	t_list	*newnode;
+	t_list	*last;
 
-newnode = malloc(sizeof(t_list));
-if (!newnode)
-	return ;
-last = lastnode(list);
-newnode -> str = buf;
-if (last != NULL)
-	last -> next = newnode;
-else
-	*list = newnode;
-newnode -> next = NULL;
+	newnode = malloc(sizeof(t_list));
+	if (!newnode)
+		return ;
+	last = lastnode(*list);
+	newnode -> str = buf;
+	if (last != NULL)
+		last -> next = newnode;
+	else
+		*list = newnode;
+	newnode -> next = NULL;
 }
 
 int	find_line(t_list *list)
@@ -89,7 +131,7 @@ char	*get_next_line(int fd)
 	make_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
-	nextline = get_next(list);
+	nextline = copystr(list);
 	clean_list_(&list);
 	return (nextline);
 }
