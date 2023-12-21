@@ -6,16 +6,59 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:12:00 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/20 16:06:42 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:10:15 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 
-int lenofstring(t_list *list)
+void	clean_list(t_list **list)
 {
-	int len;
+	t_list	*tmp;
+	if (*list == NULL)
+		return ;
+	tmp = *list;
+	while (tmp -> next != NULL)
+	{
+		tmp = (*list) -> next;
+		free((*list) -> str);
+		free(*list);
+		*list = tmp;
+	}
+}
+
+void	charsleft(t_list *list)
+{
+	char		*cleft;
+	t_list		*lastnode;
+	t_list		*remaindernode;
+	int			i;
+	int			k;
+
+	i = 0;
+	k = 0;
+	remaindernode = malloc(sizeof (t_list));
+	if (!remaindernode)
+		return ;
+	cleft = malloc(BUFFER_SIZE + 1);
+	if (!cleft)
+		return ;
+	while (list -> str[i] && list -> str[i] != '\n')
+		i++;
+	while (list -> str[i] && list -> str[++i])
+		cleft[k++] = list -> str[i];
+	cleft[k] = '\0';
+	remaindernode -> str = cleft;
+	remaindernode -> next = NULL;
+	free(cleft);
+	clean_list(&list);
+}
+
+int	lenofstring(t_list *list)
+{
+	int	len;
+
 	while (list)
 	{
 		len = 0;
@@ -23,18 +66,18 @@ int lenofstring(t_list *list)
 		{
 			len++;
 		}
-		list -> next;
+		list = list -> next;
 	}
-	return(len);
+	return (len);
 }
 
 char	*copystr(t_list *list)
 {
 	char	*full_line;
 	int		strlen;
-	int i;
-	int k;
-	
+	int		i;
+	int		k;
+
 	k = 0;
 	strlen = (lenofstring(list));
 	full_line = malloc(strlen +1);
@@ -45,25 +88,16 @@ char	*copystr(t_list *list)
 		i = 0;
 		while (list -> str[i])
 		{
-			if (list -> str[i] =='\n')
+			if (list -> str[i] == '\n')
+			{
 				i++;
 				full_line[k] = '\0';
+			}
 			full_line[k++] = list -> str[i++];
 		}
-		list -> next;
+		list = list -> next;
 	}
 	return (full_line);
-}
-
-t_list	*lastnode(t_list *list)
-{
-	while (list != NULL)
-	{
-		if (list -> next == NULL)
-			return (list);
-	list = list -> next;
-	}
-	return (list);
 }
 
 void	addnode(t_list **list, char *buf)
@@ -132,6 +166,6 @@ char	*get_next_line(int fd)
 	if (list == NULL)
 		return (NULL);
 	nextline = copystr(list);
-	clean_list_(&list);
+	charsleft(list);
 	return (nextline);
 }
