@@ -6,12 +6,22 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:12:00 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/21 16:10:15 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:12:04 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+t_list	*lastnode(t_list *list)
+{
+	while (list != NULL)
+	{
+		if (list -> next == NULL)
+			return (list);
+		list = list -> next;
+	}
+	return (list);
+}
 
 void	clean_list(t_list **list)
 {
