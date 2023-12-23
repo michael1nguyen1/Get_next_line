@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 14:16:53 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/22 22:20:22 by linhnguy         ###   ########.fr       */
+/*   Created: 2023/12/23 20:52:03 by linhnguy          #+#    #+#             */
+/*   Updated: 2023/12/23 20:52:04 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
@@ -27,14 +26,16 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+void	copy_str(t_list *list, char *full_line);
+
 char	*get_next_line(int fd);
 
-t_list	*lastnode(t_list *list);
+t_list	*last_node(t_list *list);
 
-void	addnode(t_list **list, char *buf);
+void	add_node(t_list **list, char *buf);
 
-int		lenofstring(t_list *list);
+int		len_of_string(t_list *list);
 
-void	clean_list(t_list **list, t_list *remaindernode, char *cleft);
+void	clean_list(t_list **list, t_list *remainder_node);
 
 #endif

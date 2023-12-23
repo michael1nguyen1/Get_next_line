@@ -6,13 +6,37 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:28:26 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/22 22:20:51 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/23 20:51:34 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_list	*lastnode(t_list *list)
+void	copy_str(t_list *list, char *full_line)
+{
+	int	i;
+	int	k;
+
+	k = 0;
+	while (list)
+	{
+		i = 0;
+		while (list->str[i])
+		{
+			if (list->str[i] == '\n')
+			{
+				full_line[k++] = '\n';
+				full_line[k] = '\0';
+				return ;
+			}
+			full_line[k++] = list->str[i++];
+		}
+		list = list->next;
+	}
+	full_line[k] = '\0';
+}
+
+t_list	*last_node(t_list *list)
 {
 	while (list != NULL)
 	{
@@ -23,24 +47,24 @@ t_list	*lastnode(t_list *list)
 	return (list);
 }
 
-void	addnode(t_list **list, char *buf)
+void	add_node(t_list **list, char *buf)
 {
-	t_list	*newnode;
+	t_list	*new_node;
 	t_list	*last;
 
-	newnode = malloc(sizeof(t_list));
-	if (!newnode)
+	new_node = malloc(sizeof(t_list));
+	if (!new_node)
 		return ;
-	last = lastnode(*list);
-	newnode -> str = buf;
+	last = last_node(*list);
+	new_node -> str = buf;
 	if (last == NULL)
-		*list = newnode;
+		*list = new_node;
 	else
-		last->next = newnode;
-	newnode -> next = NULL;
+		last->next = new_node;
+	new_node -> next = NULL;
 }
 
-int	lenofstring(t_list *list)
+int	len_of_string(t_list *list)
 {
 	int	len;
 	int	i;
@@ -49,9 +73,9 @@ int	lenofstring(t_list *list)
 	while (list)
 	{
 		i = 0;
-		while (list -> str[i] && list -> str[i] != '\n')
+		while (list->str[i] && list->str[i] != '\n')
 		{
-			if(list->str[i] == '\n')
+			if (list->str[i] == '\n')
 			{
 				++len;
 				return (len);
@@ -59,12 +83,12 @@ int	lenofstring(t_list *list)
 			i++;
 			len++;
 		}
-		list = list -> next;
+		list = list->next;
 	}
 	return (len);
 }
 
-void	clean_list(t_list **list, t_list *remaindernode, char *cleft)
+void	clean_list(t_list **list, t_list *remainder_node)
 {
 	t_list	*tmp;
 
@@ -78,11 +102,11 @@ void	clean_list(t_list **list, t_list *remaindernode, char *cleft)
 		free(*list);
 		*list = tmp;
 	}
-		if (remaindernode->str[0])
-			*list = remaindernode;
+	if (remainder_node->str[0])
+		*list = remainder_node;
 	else
 	{
-		free(remaindernode);
-		free(cleft);
+		free(remainder_node->str);
+		free(remainder_node);
 	}
 }

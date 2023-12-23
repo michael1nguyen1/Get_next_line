@@ -6,7 +6,7 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:12:00 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/22 22:19:44 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/23 20:51:03 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,68 +14,44 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-void	copy_str(t_list *list, char *full_line)
-{
-	int	i;
-	int	k;
-
-	k = 0;
-	while (list)
-	{
-		i = 0;
-		while (list->str[i])
-		{
-			if (list->str[i] == '\n')
-			{
-				full_line[k++] = '\n';
-				full_line[k] = '\0';
-				return;
-			}
-			full_line[k++] = list->str[i++];
-		}
-		list = list->next;
-	}
-	full_line[k] = '\0';
-}
-
-static char	*makestr(t_list *list)
+static char	*make_str(t_list *list)
 {
 	char	*full_line;
 	int		strlen;
 
-	strlen = (lenofstring(list));
+	strlen = (len_of_string(list));
 	full_line = malloc(strlen +1);
 	if (!full_line)
 		return (NULL);
-		copy_str(list, full_line);
+	copy_str(list, full_line);
 	return (full_line);
 }
 
-static void	charsleft(t_list *list)
+static void	chars_left(t_list **list)
 {
-	char		*cleft;
-	t_list		*endnode;
-	t_list		*remaindernode;
+	char		*c_left;
+	t_list		*end_node;
+	t_list		*remainder_node;
 	int			i;
 	int			k;
 
 	i = 0;
 	k = 0;
-	remaindernode = malloc(sizeof(t_list));
-	if (!remaindernode)
+	remainder_node = malloc(sizeof(t_list));
+	if (!remainder_node)
 		return ;
-	cleft = malloc(BUFFER_SIZE + 1);
-	if (!cleft)
+	c_left = malloc(BUFFER_SIZE + 1);
+	if (!c_left)
 		return ;
-	endnode = lastnode(list);
-	while (endnode -> str[i] && endnode -> str[i] != '\n')
+	end_node = last_node(*list);
+	while (end_node->str[i] && end_node->str[i] != '\n')
 		i++;
-	while (endnode -> str[i] && endnode -> str[++i])
-		cleft[k++] = endnode -> str[i];
-	cleft[k] = '\0';
-	remaindernode -> str = cleft;
-	remaindernode -> next = NULL;
-	clean_list(&list, remaindernode, cleft);
+	while (end_node->str[i] && end_node->str[++i])
+		c_left[k++] = end_node->str[i];
+	c_left[k] = '\0';
+	remainder_node->str = c_left;
+	remainder_node->next = NULL;
+	clean_list(list, remainder_node);
 }
 
 static int	find_line(t_list *list)
@@ -115,7 +91,7 @@ static void	make_list(t_list **list, int fd)
 			return ;
 		}
 		buf[buff_read] = '\0';
-		addnode(list, buf);
+		add_node(list, buf);
 	}
 }
 
@@ -129,25 +105,26 @@ char	*get_next_line(int fd)
 	make_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
-	nextline = makestr(list);
-	charsleft(list);
+	nextline = make_str(list);
+	chars_left(&list);
 	return (nextline);
 }
-int main(void)
-{
-	const char *fd = "test.txt";
-	int t = open(fd, O_RDONLY);
-	char *result;
-	result = get_next_line(t);
-	printf("%s\n",result);
-	printf("first is done\n");
-	result = get_next_line(t);
-	printf("%s\n",result);
-	printf("second is done\n");
-	// while ((result = get_next_line(t)) > 0)
-	// {
-	// 	printf("%s",result);
-	// }
-	close(t);
-	return (0);
-}
+// int main(void)
+// {
+//     int    fd;
+//     char    *line;
+
+//     fd = open("test.txt", O_RDONLY);
+//     while ((line = get_next_line(fd)))
+//     {
+//         printf("%s", line);
+//     }
+// // line = get_next_line(fd);
+// // 	printf("%s\n",line);
+// // 	printf("first is done\n");
+// // 	line = get_next_line(fd);
+// // 	printf("%s\n",line);
+// // 	printf("second is done\n");
+// // 	printf("%s\n",line);
+// // 	printf("third is done\n");
+// }
