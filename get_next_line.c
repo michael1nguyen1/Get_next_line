@@ -6,13 +6,13 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:12:00 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/23 20:51:03 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/25 20:09:44 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
-#include <stdio.h>
+# include <stdio.h>
+# include <string.h>
 
 static char	*make_str(t_list *list)
 {
@@ -20,7 +20,7 @@ static char	*make_str(t_list *list)
 	int		strlen;
 
 	strlen = (len_of_string(list));
-	full_line = malloc(strlen +1);
+	full_line = malloc(strlen + 1);
 	if (!full_line)
 		return (NULL);
 	copy_str(list, full_line);
@@ -76,8 +76,8 @@ static int	find_line(t_list *list)
 
 static void	make_list(t_list **list, int fd)
 {
-	int		buff_read;
-	char	*buf;
+	int			buff_read;
+	char		*buf;
 
 	while (!find_line(*list))
 	{
@@ -98,33 +98,49 @@ static void	make_list(t_list **list, int fd)
 char	*get_next_line(int fd)
 {
 	static t_list	*list = NULL;
-	char			*nextline;
-
-	if (fd < 0 || BUFFER_SIZE <= 0 || read (fd, &nextline, 0) < 0)
+	char			*next_line;
+	t_list	*tmp;
+	
+	tmp = list;
+	if (fd < 0 || BUFFER_SIZE < 0 || read (fd, &next_line, 0) < 0)
+	{
+		if (list != NULL)
+			{
+				while (list)
+				{
+					tmp = (list)->next;
+					free((list)->str);
+					free(list);
+					list = tmp;
+				}
+			}
 		return (NULL);
+	}
 	make_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
-	nextline = make_str(list);
+	next_line = make_str(list);
 	chars_left(&list);
-	return (nextline);
+	return (next_line);
 }
+
 // int main(void)
 // {
 //     int    fd;
 //     char    *line;
 
-//     fd = open("test.txt", O_RDONLY);
+//     fd = open("../if.txt", O_RDONLY);
+// // line = get_next_line(fd);
+// 	// printf("%s\n",line);
+// 	// printf("first is done\n");
+// 	// line = get_next_line(fd);
+// 	// printf("%s\n",line);
+// 	// printf("second is done\n");
+// 	// printf("%s\n",line);
+// 	// printf("third is done\n");
 //     while ((line = get_next_line(fd)))
 //     {
 //         printf("%s", line);
+// 	free(line);
 //     }
-// // line = get_next_line(fd);
-// // 	printf("%s\n",line);
-// // 	printf("first is done\n");
-// // 	line = get_next_line(fd);
-// // 	printf("%s\n",line);
-// // 	printf("second is done\n");
-// // 	printf("%s\n",line);
-// // 	printf("third is done\n");
 // }

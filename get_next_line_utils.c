@@ -6,7 +6,7 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:28:26 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/23 20:51:34 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/25 20:09:53 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ int	len_of_string(t_list *list)
 	while (list)
 	{
 		i = 0;
-		while (list->str[i] && list->str[i] != '\n')
+		while (list->str[i])
 		{
 			if (list->str[i] == '\n')
 			{
-				++len;
+				len++;
 				return (len);
 			}
 			i++;

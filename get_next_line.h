@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/23 20:52:03 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/23 20:52:04 by linhnguy         ###   ########.fr       */
+/*   Created: 2023/12/15 14:16:53 by linhnguy          #+#    #+#             */
+/*   Updated: 2023/12/25 20:10:15 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 1000000
 # endif
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
 
 typedef struct s_list
 {
