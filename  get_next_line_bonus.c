@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*    get_next_line_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 14:12:00 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/27 19:05:11 by linhnguy         ###   ########.fr       */
+/*   Created: 2023/12/27 19:20:35 by linhnguy          #+#    #+#             */
+/*   Updated: 2023/12/27 19:26:52 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>

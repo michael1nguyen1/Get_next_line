@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 14:28:26 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/27 19:04:09 by linhnguy         ###   ########.fr       */
+/*   Created: 2023/12/27 19:25:45 by linhnguy          #+#    #+#             */
+/*   Updated: 2023/12/27 19:26:36 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	copy_str(t_list *list, char *full_line)
 {
