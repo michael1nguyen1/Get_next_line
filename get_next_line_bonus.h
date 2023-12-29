@@ -6,7 +6,7 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:25:29 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/27 19:26:33 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/28 17:13:36 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_next_line(int fd);
 
 t_list	*last_node(t_list *list);
 
-int		add_node(t_list **list, char *buf);
+int		add_node(t_list **list, char *buf, int fd);
 
 int		len_of_string(t_list *list);
 

@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 14:12:00 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/28 19:16:01 by linhnguy         ###   ########.fr       */
+/*   Created: 2023/12/27 19:20:35 by linhnguy          #+#    #+#             */
+/*   Updated: 2023/12/28 18:02:14 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <string.h>
+#include "get_next_line_bonus.h"
 
 static char	*make_str(t_list *list)
 {
@@ -82,9 +77,8 @@ int	make_list(t_list **list, int fd)
 {
 	int			buff_read;
 	char		*buf;
-	int			tmp;
 
-	while (!find_line(*list))
+	while (!find_line(list[fd]))
 	{
 		buf = malloc(BUFFER_SIZE + 1);
 		if (!buf)
@@ -95,8 +89,7 @@ int	make_list(t_list **list, int fd)
 		if (buff_read == 0)
 			return (free(buf), 1);
 		buf[buff_read] = '\0';
-		tmp = add_node(list, buf);
-		if (tmp == -1)
+		if (add_node(list, buf, fd) == -1)
 			return (free(buf), -1);
 	}
 	return (0);
@@ -104,44 +97,24 @@ int	make_list(t_list **list, int fd)
 
 char	*get_next_line(int fd)
 {
-	static t_list	*list = NULL;
+	static t_list	*list[4096];
 	char			*next_line;
 	int				tmp;
 
 	if (fd < 0 || BUFFER_SIZE < 0 || read (fd, &next_line, 0) < 0)
 	{
-		if (list != NULL)
-			clean_list(&list, 0);
+		if (list[fd] != NULL)
+			clean_list(&list[fd], 0);
 		return (NULL);
 	}
-	tmp = make_list(&list, fd);
-	if (tmp == -1 || !list)
-		return (clean_list(&list, 0), NULL);
-	next_line = make_str(list);
+	tmp = make_list(list, fd);
+	if (tmp == -1 || !list[fd])
+		return (clean_list(&list[fd], 0), NULL);
+	next_line = make_str(list[fd]);
 	if (next_line == NULL)
-		return (clean_list(&list, 0), NULL);
-	tmp = chars_left(&list);
+		return (clean_list(&list[fd], 0), NULL);
+	tmp = chars_left(&list[fd]);
 	if (tmp == -1)
-		return (free(next_line), clean_list(&list, 0), NULL);
+		return (free(next_line), clean_list(&list[fd], 0), NULL);
 	return (next_line);
-}
-int main(void)
-{
-    int    fd;
-    char    *line;
-
-    fd = open("../if.txt", O_RDONLY);
-// line = get_next_line(fd);
-	// printf("%s\n",line);
-	// printf("first is done\n");
-	// line = get_next_line(fd);
-	// printf("%s\n",line);
-	// printf("second is done\n");
-	// printf("%s\n",line);
-	// printf("third is done\n");
-    while ((line = get_next_line(fd)))
-    {
-        printf("%s", line);
-	free(line);
-    }
 }

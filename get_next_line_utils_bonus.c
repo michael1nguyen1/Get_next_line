@@ -6,7 +6,7 @@
 /*   By: linhnguy <linhnguy@hive.student.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:25:45 by linhnguy          #+#    #+#             */
-/*   Updated: 2023/12/27 19:26:36 by linhnguy         ###   ########.fr       */
+/*   Updated: 2023/12/28 18:02:33 by linhnguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_list	*last_node(t_list *list)
 	return (list);
 }
 
-int	add_node(t_list **list, char *buf)
+int	add_node(t_list **list, char *buf, int fd)
 {
 	t_list	*new_node;
 	t_list	*last;
@@ -55,12 +55,12 @@ int	add_node(t_list **list, char *buf)
 	new_node = malloc(sizeof(t_list));
 	if (!new_node)
 		return (-1);
-	last = last_node(*list);
-	new_node -> str = buf;
+	last = last_node(list[fd]);
 	if (last == NULL)
-		*list = new_node;
+		list[fd] = new_node;
 	else
 		last->next = new_node;
+	new_node -> str = buf;
 	new_node -> next = NULL;
 	return (0);
 }
